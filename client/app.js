@@ -17,7 +17,35 @@ const login = (name) => {
   }
 }
 
+function addMessage(author, content) {
+  const message = document.createElement('li');
+  message.classList.add('message');
+  message.classList.add('message--received');
+  if(author === userName) message.classList.add('message--self');
+  message.innerHTML = `
+    <h3 class="message__author">${userName === author ? 'You' : author }</h3>
+    <div class="message__content">
+      ${content}
+    </div>
+  `;
+  messagesList.appendChild(message);
+}
+
+const sendMessage = () => {
+  if (!messageContentInput) {
+    alert('Write the message first');
+  } else {
+    addMessage(userName, messageContentInput.value);
+    messageContentInput.value = '';
+  }
+}
+
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
   login(userNameInput.value);
+});
+
+addMessageForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  sendMessage();
 });
