@@ -8,7 +8,7 @@ const messageContentInput = document.querySelector('#message-content');
 let userName;
 
 const login = (name) => {
-  if (!userNameInput) {
+  if (!userNameInput.value) {
     alert('Enter your name');
   } else {
     userName = userNameInput.value;
@@ -32,7 +32,7 @@ function addMessage(author, content) {
 }
 
 const sendMessage = () => {
-  if (!messageContentInput) {
+  if (!messageContentInput.value) {
     alert('Write the message first');
   } else {
     addMessage(userName, messageContentInput.value);
