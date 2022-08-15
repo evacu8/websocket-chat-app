@@ -14,13 +14,13 @@ socket.on('message', ({ author, content }) => addMessage(author, content));
 socket.connect('http://localhost:8000');
 
 const login = (name) => {
-  e.preventDefault();
   if (!userNameInput.value) {
     alert('Enter your name');
   } else {
     userName = userNameInput.value;
     loginForm.classList.remove('show');
     messagesSection.classList.add('show');
+    socket.emit('join', userName);
   }
 }
 
@@ -50,6 +50,7 @@ const sendMessage = (e) => {
 }
 
 loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
   login(userNameInput.value);
 });
 
