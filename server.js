@@ -27,6 +27,10 @@ io.on('connection', (socket) => {
   socket.on('join', (userName) => {
     const user = { name: userName, id: socket.id }
     users.push(user);
+    socket.broadcast.emit('message', {
+      author: 'Chat Bot',
+      content: `<i>${userName} has joined the conversation!`,
+    });
   })
 
   socket.on('message', (message) => {
@@ -36,7 +40,12 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     if (users.length > 0) {
+      const currentUser = users.filter((user) => user.id === socket.id)[0].name;
       users = users.filter((user) => user.id !== socket.id);
+      socket.broadcast.emit('message', {
+        author: 'Chat Bot',
+        content: `<i>${currentUser} has left the conversation... :(`,
+      });
     }
   });
 });
