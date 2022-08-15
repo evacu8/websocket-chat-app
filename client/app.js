@@ -7,7 +7,14 @@ const messageContentInput = document.querySelector('#message-content');
 
 let userName;
 
+const socket = io();
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
+
+socket.connect('http://localhost:8000');
+
 const login = (name) => {
+  e.preventDefault();
   if (!userNameInput.value) {
     alert('Enter your name');
   } else {
@@ -31,21 +38,21 @@ function addMessage(author, content) {
   messagesList.appendChild(message);
 }
 
-const sendMessage = () => {
+const sendMessage = (e) => {
+  e.preventDefault();
   if (!messageContentInput.value) {
     alert('Write the message first');
   } else {
     addMessage(userName, messageContentInput.value);
+    socket.emit('message', { author: userName, content: messageContentInput.value})
     messageContentInput.value = '';
   }
 }
 
 loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
   login(userNameInput.value);
 });
 
 addMessageForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  sendMessage();
+  sendMessage(e);
 });
